@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>DocMorph - PDF to Word</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <h1>🌀 DocMorph</h1>
+
+  <form id="uploadForm" method="POST" action="/convert" enctype="multipart/form-data">
+    <div id="drop-area">
+      <p>📄 Drag & drop a PDF here or click to browse</p>
+      <input type="file" name="pdf" id="fileElem" accept="application/pdf" required>
+    </div>
+    <p id="fileLabel">No file selected</p>
+    <button type="submit">Convert to Word</button>
+  </form>
+
+  <script>
+    const dropArea = document.getElementById("drop-area");
+    const fileInput = document.getElementById("fileElem");
+    const fileLabel = document.getElementById("fileLabel");
+
+    dropArea.addEventListener("click", () => fileInput.click());
+
+    fileInput.addEventListener("change", () => {
+      if (fileInput.files.length > 0) {
+        fileLabel.textContent = "Selected: " + fileInput.files[0].name;
+      }
+    });
+
+    dropArea.addEventListener("dragover", e => {
+      e.preventDefault();
+      dropArea.classList.add("highlight");
+    });
+
+    dropArea.addEventListener("dragleave", () => {
+      dropArea.classList.remove("highlight");
+    });
+
+    dropArea.addEventListener("drop", e => {
+      e.preventDefault();
+      dropArea.classList.remove("highlight");
+      fileInput.files = e.dataTransfer.files;
+      fileLabel.textContent = "Dropped: " + e.dataTransfer.files[0].name;
+    });
+  </script>
+</body>
+</html>
